@@ -8,5 +8,8 @@ outcomes = table(c(event_file))
 
 # Creates a simple pie chart
 slices = c(outcomes["Attending"], outcomes["Declined"], outcomes["NoReply"], outcomes["Maybe"])
-labels = c("Attending", "Declined", "NoReply", "Maybe")
-pie(slices, labels = labels, main = "Pie Chart of Event Responses")
+labels = c("Attending", "Declined", "No Reply", "Maybe")
+percentages = round(slices/sum(slices)*100, digits = 1)
+labels = paste(labels, ": ", round(slices),"\n   (",percentages,"%)",sep="")
+colours = c("#9EF0A4", "#E86D6D", "#BDBDBD", "#F5E487")
+pie(slices, labels = labels, col = colours, main = "Pie Chart of Event Responses")
