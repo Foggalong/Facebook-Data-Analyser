@@ -116,6 +116,21 @@ print("Actual messages:", count_check)
 
 # Makes use of times_list and date_count_list created previously
 
+# Creates list of all times
+all_times = []
+for hour in range(0,24):
+	for mins in range(0,60):
+			hourv, minv = "", ""
+			if hour < 10:
+					hourv = "0"+str(hour)
+			else:
+					hourv = hour
+			if mins < 10:
+					minv = "0"+str(mins)
+			else:
+					minv = mins
+			all_times.append(str(hourv)+str(minv))
+
 # Creates a list of dates
 time_list = []
 for time in times_list:
@@ -134,10 +149,42 @@ unique_time_count_list = [0 for item in unique_time_list]
 for time in time_list:
 	unique_time_count_list[unique_time_list.index(time)] += 1
 
+# TEST
+all_unique_time_list = []
+all_unique_time_count_list = []
+never_messaged_times =[]
+# binary_message_list = [] for heatmapping
+for time in all_times:
+	all_unique_time_list.append(time)
+	if time in unique_time_list:
+		all_unique_time_count_list.append(unique_time_count_list[unique_time_list.index(time)])
+		# binary_message_list.append(1) for heatmapping
+	else:
+		time_parts = list(str(time))
+		time_parts.insert(2,":")
+		time = "".join(time_parts)
+		never_messaged_times.append(time)
+		all_unique_time_count_list.append(0)
+		# binary_message_list.append(0) for heat mapping
+print("Never sent a message at the following %d times: %s" % (len(never_messaged_times), ", ".join(never_messaged_times)))
+# TEST
+
+time_labs=[]
+for time in all_unique_time_list:
+	if (list(str(time))[2]+list(str(time))[3] == "00") and (int(time)%3 == 0):
+		time_parts = list(str(time))
+		time_parts.insert(2, ":")
+		time_labs.append("".join(time_parts))
+	else:
+		time_labs.append("")
+
 target = open('time_data.txt', 'w')
 target.truncate()
-for x in range(0, len(unique_time_list)-1):
-	target.write("%s  %s \n" % (unique_time_list[x], unique_time_count_list[x]))
+for x in range(0, len(all_unique_time_list)-1):
+	time_parts = list(str(all_unique_time_list[x]))
+	time_parts.insert(2,":")
+	time = "".join(time_parts)
+	target.write("%s  %s  %s \n" % (time, all_unique_time_count_list[x], time_labs[x])) # binary_message_list[x]
 target.close()
 print("Created message time data")
 
@@ -242,17 +289,17 @@ but Facebook gives them in an inconsitent format so the
 output was similarly inconsistent and difficult to use."""
 # day_list = ["Monday,","Tuesday,","Wednesday,","Thursday,","Friday,","Saturday,","Sunday,"]
 # for event in temp_list:
-# 	for word in event.split(" "):
-# 		if word in day_list:
-# 			if event.split(" ").index(word)-1 == 0:
-# 				print(event.split(event.split(" ")[event.split(" ").index(word)]))
-# 				break
-# 			else:
-# 				print(event.split(event.split(" ")[event.split(" ").index(word)-1]))
-# 				break
+#	 for word in event.split(" "):
+#		 if word in day_list:
+#			 if event.split(" ").index(word)-1 == 0:
+#				 print(event.split(event.split(" ")[event.split(" ").index(word)]))
+#				 break
+#			 else:
+#				 print(event.split(event.split(" ")[event.split(" ").index(word)-1]))
+#				 break
 
 target = open('event_data.txt', 'w')
 target.truncate()
 for event in event_data:
-	target.write("%s \n" % event[2])
+	target.write("%s \n" % event[2].replace(" r","R"))
 target.close()
