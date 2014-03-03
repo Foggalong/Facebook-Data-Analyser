@@ -10,5 +10,5 @@ data = c(date_file)
 pdf("date_graph.pdf")
 barplot(data[[2]], names.arg=data[[3]], xlab="Time Split By Hour", ylab="Messages",
 	main="Graph Showing Messages Over Time")
-# abline(v = (seq(0, 1800, 75)), col="lightgray", lty="dotted")
+# abline(v = (seq(0, 1800, 75)), col="lightgray", lty="dotted") 
 dev.off()
