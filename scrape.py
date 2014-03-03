@@ -39,6 +39,9 @@ print("Number of conversations:", thread_count)
 """Messages Over Time Analysis"""
 ###########################################################################
 
+# For Creating Exhaustive Date List
+import datetime
+
 # Creates list of all times
 times_list = []
 for line in messages_file_line_list:
@@ -52,7 +55,8 @@ date_list = []
 for time in times_list:
 	if time.split(" at ")[0] in date_list:
 		pass
-	else: date_list.append(time.split(" at ")[0])
+	else:
+		date_list.append(time.split(" at ")[0])
 
 # Creates ISO date list
 iso_date_list = []
@@ -82,6 +86,7 @@ date_count_list = [0 for item in date_list]
 for time in times_list:
 	date_count_list[date_list.index(time.split(" at ")[0])] += 1
 
+# Groups date which are the same together
 unique_date_list = []
 for date in iso_date_list:
 	if date in unique_date_list:
@@ -89,22 +94,48 @@ for date in iso_date_list:
 	else:
 		unique_date_list.append(date)
 
+# Creating a message count list for all unique dates
 unique_date_list = sorted(unique_date_list, key=int)
 unique_date_count_list = [0 for item in unique_date_list]
-
 for date in iso_date_list:
 	unique_date_count_list[unique_date_list.index(date)] += date_count_list[iso_date_list.index(date)]
 
+# Creates a list of every date in usage window
+all_dates = []
+for date_item in unique_date_list:
+	date_int = int(str(datetime.datetime.strptime(date_item, '%Y%m%d').date()).replace("-",""))
+	if date_int < 20040204: # the facebook start date (see issue 2)
+		pass
+	else:
+		date1 = str(date_int)
+		break
+date2 = unique_date_list[len(unique_date_list)-1]
+start = datetime.datetime.strptime(date1, '%Y%m%d')
+end = datetime.datetime.strptime(date2, '%Y%m%d')
+step = datetime.timedelta(days = 1)
+while start <= end:
+	all_dates.append(str(start.date()).replace("-",""))
+	start += step
+
+# A count last which accounts for inactive dates
+all_date_count_list = []
+for date in all_dates:
+	if date in unique_date_list:
+		all_date_count_list.append(unique_date_count_list[unique_date_list.index(date)])
+	else:
+		all_date_count_list.append(0)
+
+# Writes data to file
 target = open('date_data.txt', 'w')
 target.truncate()
-for date in unique_date_list:
-	target.write("%s  %s \n" % (date, unique_date_count_list[unique_date_list.index(date)]))
+for date in all_dates:
+	target.write("%s  %s \n" % (date, all_date_count_list[all_dates.index(date)]))
 target.close()
 print("Created message date data")
 
 # Checks all messages counted - I lose 4 messages
 count_check = 0
-for item in unique_date_count_list:
+for item in all_date_count_list:
 	count_check += int(item)
 print("Actual messages:", count_check)
 
@@ -284,9 +315,7 @@ event_data.pop(len(event_data)-1)
 event_data.append(last_item)
 print("Number of events:", len(event_data))
 
-"""This code was designed to seperate out the event dates
-but Facebook gives them in an inconsitent format so the
-output was similarly inconsistent and difficult to use."""
+# See Issue 1
 # day_list = ["Monday,","Tuesday,","Wednesday,","Thursday,","Friday,","Saturday,","Sunday,"]
 # for event in temp_list:
 #	 for word in event.split(" "):
