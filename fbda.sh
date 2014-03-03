@@ -24,6 +24,7 @@ pdftk date_graph.pdf time_graph.pdf event_pie.pdf cat output report.pdf
 # Tidying Up the files
 echo Tidying Up...
 rm date_data.txt
+rm date_graph.pdf
 rm event_data.txt
 rm event_pie.pdf
 rm time_data.txt
