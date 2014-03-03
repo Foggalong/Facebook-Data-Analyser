@@ -8,7 +8,6 @@ data = c(date_file)
 
 # Saving the Pie Chat As a PDF
 pdf("date_graph.pdf")
-barplot(data[[2]], names.arg=data[[3]], xlab="Time Split By Hour", ylab="Messages",
+barplot(data[[2]], xlab="Date", ylab="Messages",
 	main="Graph Showing Messages Over Time")
-# abline(v = (seq(0, 1800, 75)), col="lightgray", lty="dotted") 
 dev.off()
