@@ -13,8 +13,8 @@ python3 scrape.py
 
 # Running analysis with R files
 echo Running analysis...
-R --no-save < time_graph.r
-R --no-save < event_pie.r
+R -q --no-save < time_graph.r
+R -q --no-save < event_pie.r
 
 # Compiling results
 echo Creating report document...
