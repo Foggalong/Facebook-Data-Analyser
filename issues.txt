@@ -1,0 +1,9 @@
+Issue 1
+This code was designed to seperate out the event dates but Facebook gives them in an inconsitent
+format so the output was similarly inconsistent and difficult to use.
+
+Issue 2
+There's a problem where some things (so far I've seen only messages) will be recorded as happening
+at a very old date (e.g 1970) which predates Facebook's eistence. So far I've set it to filter out
+dates that predate Facebook's creation (February 4, 2004) but in future I will try and set this to
+the users account creation.
